@@ -12,7 +12,12 @@ public class Clock : MonoBehaviour {
         minutesTransform,
         secondsTransform;
 
-    public bool continuous;
+    public bool
+        continuous;
+    private bool
+        reversePeriod = false;
+
+    public LightingManager lightingManager;
 
     void UpdateContinuous() {
         TimeSpan time = DateTime.Now.TimeOfDay;
@@ -22,6 +27,7 @@ public class Clock : MonoBehaviour {
             Quaternion.Euler(0f, (float)time.TotalMinutes * degreesPerMinute, 0f);
         secondsTransform.localRotation =
             Quaternion.Euler(0f, (float)time.TotalSeconds * degreesPerSecond, 0f);
+        lightingManager.TimeofDay = ((float)time.TotalHours + (reversePeriod ? 0 : 12)) % 24;
     }
 
     void UpdateDiscrete()
@@ -33,6 +39,7 @@ public class Clock : MonoBehaviour {
             Quaternion.Euler(0f, time.Minute * degreesPerMinute, 0f);
         secondsTransform.localRotation =
             Quaternion.Euler(0f, time.Second * degreesPerSecond, 0f);
+        lightingManager.UpdateLighting(time.Hour / 24);
     }
 
     void Update () {
@@ -42,5 +49,11 @@ public class Clock : MonoBehaviour {
         else {
             UpdateDiscrete();
         }
+    }
+
+    //Destroy all primitives
+    public void ChangeTimePeriod()
+    {
+        reversePeriod = !reversePeriod;
     }
 }
