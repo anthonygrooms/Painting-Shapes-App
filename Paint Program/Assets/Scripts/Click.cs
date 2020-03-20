@@ -11,13 +11,7 @@ public class Click : MonoBehaviour
     public Slider[] colorSliders = new Slider[3]; // References to color sliders
     [SerializeField]
     [Range(0,1)]
-    private float maxRed;
-    [SerializeField]
-    [Range(0, 1)]
-    private float maxGreen;
-    [SerializeField]
-    [Range(0, 1)]
-    private float maxBlue;
+    private float maxRed, maxGreen, maxBlue;
 
     //Scale
     [SerializeField]
@@ -27,10 +21,11 @@ public class Click : MonoBehaviour
 
     // Physics
     [SerializeField]
-    private bool hasPhysics;
-    [SerializeField]
-    private bool hasGravity;
+    private bool hasPhysics, hasGravity;
     private Rigidbody shapeRigidBody;
+    [SerializeField]
+    public Slider luminositySlider;
+    private float luminosity;
 
     // Destroy
     [SerializeField]
@@ -49,6 +44,7 @@ public class Click : MonoBehaviour
         destroy = true;
         hasPhysics = false;
         hasGravity = false;
+        luminosity = 0.0f;
     }
 
     // Update is called once per frame
@@ -78,7 +74,12 @@ public class Click : MonoBehaviour
             primitive.AddComponent<PaintedObject>(); /// Add PaintedObject component to primitive
             primitives.Add(primitive); // Add the primtive to the primitive list
             primitive.transform.position = clickPosition; //Reposition the object
-            primitive.GetComponent<Renderer>().material.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
+            Renderer renderer = primitive.GetComponent<Renderer>();
+            Material mat = renderer.material;
+            renderer.material.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
+            renderer.material.EnableKeyword("_EMISSION");
+            renderer.material.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
+            //DynamicGI.SetEmissive(renderer,renderer.material.color)
             primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
 
             // Apply physics to the primitive if necessary
@@ -110,6 +111,13 @@ public class Click : MonoBehaviour
     public void ChangeHasGravity()
     {
         hasGravity = !hasGravity;
+    }
+
+    // Update luminosity of objects
+    public void ChangeLuminosity()
+    {
+        print(luminosity);
+        luminosity = luminositySlider.value;
     }
 
     //Destroy all primitives

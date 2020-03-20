@@ -27,7 +27,7 @@ public class Clock : MonoBehaviour {
             Quaternion.Euler(0f, (float)time.TotalMinutes * degreesPerMinute, 0f);
         secondsTransform.localRotation =
             Quaternion.Euler(0f, (float)time.TotalSeconds * degreesPerSecond, 0f);
-        lightingManager.TimeofDay = ((float)time.TotalHours + (reversePeriod ? 0 : 12)) % 24;
+        lightingManager.TimeofDay = ((float)time.TotalHours + (reversePeriod ? 12 : 0)) % 24;
     }
 
     void UpdateDiscrete()
