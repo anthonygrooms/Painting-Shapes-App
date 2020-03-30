@@ -14,7 +14,10 @@ public class PaintedObject : MonoBehaviour
             if (Physics.Raycast(ray,out RaycastHit hit))
             {
                 if (hit.transform.name == gameObject.name)
+                {
                     Destroy(gameObject);
+                    Click.audioSources[0].Play(); // Play deleted object sound
+                }
             }
         }
 

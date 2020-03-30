@@ -46,6 +46,9 @@ public class Click : MonoBehaviour
     private GameObject primitive;
     private List<GameObject> primitives = new List<GameObject>(); // List of painted primitives
 
+    // Sounds
+    public static AudioSource[] audioSources;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +58,7 @@ public class Click : MonoBehaviour
         hasPhysics = false;
         hasGravity = false;
         luminosity = 0.0f;
+        audioSources = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -66,6 +70,12 @@ public class Click : MonoBehaviour
         maxBlue = colorSliders[2].value;
         maxSize = sizeSlider.value;
 
+        // Allow user to control range slider via scroll wheel
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        range += scrollInput * 25;
+        RangeSlider.value += scrollInput * 25;
+        range = RangeSlider.value = Mathf.Clamp(RangeSlider.value, 0, 100);
+        
         //If user is holding down left click, paint the desired primitive to the screen with desired attributes
         if (Input.GetMouseButton(0))
         {
@@ -91,12 +101,13 @@ public class Click : MonoBehaviour
             renderer.material.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
             //DynamicGI.SetEmissive(renderer,renderer.material.color)
             primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
-
+            
             // If launch mode is on, force physics to be on... things cannot be launched without physics :)
             if (LaunchMode)
             {
                 hasPhysicsButton.isOn = true;
                 RangeSlider.value = range = 0;
+                audioSources[1].Play(); // Play the shooting sound
             }
 
             // Apply physics to the primitive if necessary
