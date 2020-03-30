@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 public class Clock : MonoBehaviour {
 
     const float
@@ -11,13 +12,11 @@ public class Clock : MonoBehaviour {
         hoursTransform,
         minutesTransform,
         secondsTransform;
-
-    public bool
-        continuous;
     private bool
         reversePeriod = false;
 
     public LightingManager lightingManager;
+    public Text ampmLabel;
 
     void UpdateContinuous() {
         TimeSpan time = DateTime.Now.TimeOfDay;
@@ -28,27 +27,11 @@ public class Clock : MonoBehaviour {
         secondsTransform.localRotation =
             Quaternion.Euler(0f, (float)time.TotalSeconds * degreesPerSecond, 0f);
         lightingManager.TimeofDay = ((float)time.TotalHours + (reversePeriod ? 12 : 0)) % 24;
-    }
-
-    void UpdateDiscrete()
-    {
-        DateTime time = DateTime.Now;
-        hoursTransform.localRotation =
-            Quaternion.Euler(0f, time.Hour * degreesPerHour, 0f);
-        minutesTransform.localRotation =
-            Quaternion.Euler(0f, time.Minute * degreesPerMinute, 0f);
-        secondsTransform.localRotation =
-            Quaternion.Euler(0f, time.Second * degreesPerSecond, 0f);
-        lightingManager.UpdateLighting(time.Hour / 24);
+        ampmLabel.text = Convert.ToInt16(lightingManager.TimeofDay) >= 12 ? "PM" : "AM";
     }
 
     void Update () {
-        if (continuous) {
-            UpdateContinuous();
-        }
-        else {
-            UpdateDiscrete();
-        }
+        UpdateContinuous();
     }
 
     //Destroy all primitives

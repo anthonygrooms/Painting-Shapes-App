@@ -7,6 +7,9 @@ public class Click : MonoBehaviour
 {
     // Declare Variables
 
+    // Keeps track of how many objects have been created
+    static int objectCount;
+
     //Colors
     public Slider[] colorSliders = new Slider[3]; // References to color sliders
     [SerializeField]
@@ -26,6 +29,12 @@ public class Click : MonoBehaviour
     [SerializeField]
     public Slider luminositySlider;
     private float luminosity;
+    public Slider RangeSlider;
+    public GameObject RangeLabel;
+    private float range;
+    public static bool LaunchMode { get; set; }
+    public Toggle hasPhysicsButton;
+    public Text launchModeLabel;
 
     // Destroy
     [SerializeField]
@@ -41,6 +50,7 @@ public class Click : MonoBehaviour
     void Start()
     {
         //Initialize variables
+        objectCount = 0;
         destroy = true;
         hasPhysics = false;
         hasGravity = false;
@@ -62,18 +72,18 @@ public class Click : MonoBehaviour
             Vector3 clickPosition = -Vector3.one; // Default the click position
 
             //Use raycasting to position the primitive
-            Plane plane = new Plane(Vector3.forward, 0f);
+            Plane plane = new Plane(Vector3.forward, -range);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            float distancetoPlane;
-            if (plane.Raycast(ray,out distancetoPlane))
+            if (plane.Raycast(ray,out float distancetoPlane))
             {
                 clickPosition = ray.GetPoint(distancetoPlane);
             }
             
             primitive = GameObject.CreatePrimitive(primtiveOptions[shapeDropDown.value]); // Instantiate the desired primitive
-            primitive.AddComponent<PaintedObject>(); /// Add PaintedObject component to primitive
+            objectCount++; // Increase the object count
+            primitive.AddComponent<PaintedObject>(); // Add PaintedObject component to primitive
             primitives.Add(primitive); // Add the primtive to the primitive list
-            primitive.transform.position = clickPosition; //Reposition the object
+            primitive.name += objectCount; // Rename the object
             Renderer renderer = primitive.GetComponent<Renderer>();
             Material mat = renderer.material;
             renderer.material.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
@@ -82,11 +92,30 @@ public class Click : MonoBehaviour
             //DynamicGI.SetEmissive(renderer,renderer.material.color)
             primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
 
+            // If launch mode is on, force physics to be on... things cannot be launched without physics :)
+            if (LaunchMode)
+            {
+                hasPhysicsButton.isOn = true;
+                RangeSlider.value = range = 0;
+            }
+
             // Apply physics to the primitive if necessary
             if (hasPhysics)
             {
                 shapeRigidBody = primitive.AddComponent<Rigidbody>();
                 shapeRigidBody.useGravity = hasGravity; // Turn gravity off if necessary
+            }
+
+            // If launch mode is on, launch the objects to the desired coordinate (mouse position of screen into world space)
+            if (LaunchMode)
+            {
+                primitive.transform.position = new Vector3(0, -1, -10); //Reposition the object
+                Vector3 v = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,10));
+                shapeRigidBody.velocity = 4 * new Vector3(v.x, v.y, range + 10);
+            }
+            else
+            {
+                primitive.transform.position = clickPosition; //Reposition the object
             }
 
             // Destroy the primitive in three seconds if neccessary
@@ -116,8 +145,22 @@ public class Click : MonoBehaviour
     // Update luminosity of objects
     public void ChangeLuminosity()
     {
-        print(luminosity);
         luminosity = luminositySlider.value;
+    }
+
+    // Update how far out objects spawn
+    public void ChangeRange()
+    {
+        range = RangeSlider.value;
+    }
+
+    // Turn launch mode off and on, set the visibility of the range slider/label to oppose the state of the launch mode
+    public void ChangeLaunchMode()
+    {
+        LaunchMode = !LaunchMode;
+        launchModeLabel.text = LaunchMode ? "Launch Mode (On)" : "Launch Mode (Off)";
+        RangeSlider.gameObject.SetActive(!LaunchMode);
+        RangeLabel.SetActive(!LaunchMode);
     }
 
     //Destroy all primitives
