@@ -42,7 +42,7 @@ public class Click : MonoBehaviour
 
     // Primitive
     public Dropdown shapeDropDown; // References to drop down menu
-    private PrimitiveType[] primtiveOptions = new PrimitiveType[] { PrimitiveType.Capsule, PrimitiveType.Sphere, PrimitiveType.Cube }; // List of primitives that can be painted
+    public GameObject[] primtiveOptions; // List of primitives that can be painted
     private GameObject primitive;
     private List<GameObject> primitives = new List<GameObject>(); // List of painted primitives
 
@@ -89,7 +89,7 @@ public class Click : MonoBehaviour
                 clickPosition = ray.GetPoint(distancetoPlane);
             }
             
-            primitive = GameObject.CreatePrimitive(primtiveOptions[shapeDropDown.value]); // Instantiate the desired primitive
+            primitive = Instantiate(primtiveOptions[shapeDropDown.value]); // Instantiate the desired primitive
             objectCount++; // Increase the object count
             primitive.AddComponent<PaintedObject>(); // Add PaintedObject component to primitive
             primitives.Add(primitive); // Add the primtive to the primitive list

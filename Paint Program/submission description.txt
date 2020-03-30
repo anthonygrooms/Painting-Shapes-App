@@ -1,0 +1,13 @@
+This is my sprint 2 deliverable. The link is here:
+
+I added five features to my deliverable:
+
+1) Clock: This feature includes an analog clock that displays real time (based on the computer) just as any ordinary analog clock would. Users can click the button labeled 'Time Period' to change the period of the day (A.M./P.M.).
+
+2) Luminosity: This feature allows the user to change the luminosity (brightness) of painted objects. Users change this setting by left clicking and scrolling the slider labeled 'Luminosity'.
+
+3) Delete Objects: This feature allows users to delete objects they painted. User can do so by right clicking on any painted object. The program plays a sound to indicate that you done so.
+
+4) Range: This feature allows users to modify how far out objects will be painted. Users change this setting by left clicking and scrolling the slider labeled 'Range' or using the scroll mouse wheel.
+
+5) Launch Mode: This feature allows users to launch objects from the camera out into the world rather than simply painting them on the screen. This mode can be activated by clicking the button labled 'Lanch Mode'. The program plays a sound to indicate that you done so.
