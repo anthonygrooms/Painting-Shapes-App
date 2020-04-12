@@ -25,7 +25,7 @@ public class Clock : MonoBehaviour {
 
         lightingManager.TimeofDay = ((float)time.TotalHours + (reversePeriod ? 12 : 0)) % 24;
         ampmLabel.text = Convert.ToInt16(lightingManager.TimeofDay) >= 12 ? "P.M." : "A.M.";
-
+        
         hoursTransform.localRotation =
             Quaternion.Euler(0f, (float)time.TotalHours * degreesPerHour, 0f);
         minutesTransform.localRotation =

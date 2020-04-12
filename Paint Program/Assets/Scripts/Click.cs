@@ -40,11 +40,19 @@ public class Click : MonoBehaviour
     [SerializeField]
     private bool destroy;
 
-    // Primitive
-    public Dropdown shapeDropDown; // References to drop down menu
-    public GameObject[] primtiveOptions; // List of primitives that can be painted
+    // Primitives
+    public Dropdown shapeDropDown; // Reference to shape drop down menu
+    public Dropdown animationDropDown; // Reference to animation drop down menu
+
+    /* 2D array of gameobjects:
+     * (rows corresponds to type of animation)
+     * (column corresponds to type of shape)
+     */
+    public GameObject[] cubes, capsules, spheres;
+    private GameObject[,] primitiveOptions = new GameObject[3,4];
     private GameObject primitive;
     private List<GameObject> primitives = new List<GameObject>(); // List of painted primitives
+    private Animator anim; // Animator
 
     // Sounds
     public static AudioSource[] audioSources;
@@ -52,6 +60,16 @@ public class Click : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject[][] shapes = new GameObject[][] { cubes, capsules, spheres };
+        // Fill the primitiveOptions with the primitive prefabs
+        for (int i = 0; i < shapes.Length; i++)
+        {
+            for (int j = 0; j < shapes[i].Length; j++)
+            {
+                primitiveOptions[i, j] = shapes[i][j];
+            }
+        }
+
         //Initialize variables
         objectCount = 0;
         destroy = true;
@@ -88,17 +106,58 @@ public class Click : MonoBehaviour
             {
                 clickPosition = ray.GetPoint(distancetoPlane);
             }
-            
-            primitive = Instantiate(primtiveOptions[shapeDropDown.value]); // Instantiate the desired primitive
+
+            // Instantiate the desired primitive with the desired animation
+            primitive = Instantiate(primitiveOptions[shapeDropDown.value, animationDropDown.value]);
+
+            // Play the correct animation
+            anim = primitive.GetComponent<Animator>();
+            if (anim == null)
+            {
+                if (primitive.transform.childCount > 0)
+                    anim = primitive.transform.GetChild(0).GetComponent<Animator>();
+            }
+                
+            if (anim != null)
+                anim.SetBool("isSpinning",animationDropDown.value==1);
+
             objectCount++; // Increase the object count
             primitive.AddComponent<PaintedObject>(); // Add PaintedObject component to primitive
             primitives.Add(primitive); // Add the primtive to the primitive list
             primitive.name += objectCount; // Rename the object
             Renderer renderer = primitive.GetComponent<Renderer>();
-            Material mat = renderer.material;
-            renderer.material.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
-            renderer.material.EnableKeyword("_EMISSION");
-            renderer.material.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
+
+            // If there is a renderer, assign it a random color
+            if (renderer != null)
+            {
+                Material mat = renderer.material;
+                mat.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
+                mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
+            }
+
+            // If there are children who have renderers, assign it a random color
+            foreach (Transform child in primitive.transform)
+            {
+                Material mat = child.gameObject.GetComponent<Renderer>().material;
+                Material matChild = null;
+                if (child.childCount > 0)
+                    matChild = child.GetChild(0).gameObject.GetComponent<Renderer>().material;
+                if (mat != null)
+                {
+                    mat.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
+                    mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
+
+                    if (matChild != null)
+                    {
+                        matChild.color = new Color(Random.Range(0, maxRed), Random.Range(0, maxGreen), Random.Range(0, maxBlue), 1); //Randomize color
+                        matChild.EnableKeyword("_EMISSION");
+                        matChild.SetColor("_EmissionColor", new Vector4(mat.color.r, mat.color.g, mat.color.b) * luminosity);
+                    }
+                }
+            }
+
             //DynamicGI.SetEmissive(renderer,renderer.material.color)
             primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
             

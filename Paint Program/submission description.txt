@@ -1,13 +1,13 @@
-This is my sprint 2 deliverable. The link is here:
+This is my sprint 2 deliverable. The link is here.
 
 I added five features to my deliverable:
 
-1) Clock: This feature includes an analog clock that displays real time (based on the computer) just as any ordinary analog clock would. Users can click the button labeled 'Time Period' to change the period of the day (A.M./P.M.).
+1) Clock: This feature includes an analog clock that displays real time (based on the computer) via hands just as any ordinary analog clock would. The background sky also reflects the time. The user is given a button labeled 'Time Period'. Users can click the button labeled 'Time Period' to change the period of the day (A.M./P.M.).
 
-2) Luminosity: This feature allows the user to change the luminosity (brightness) of painted objects. Users change this setting by left clicking and scrolling the slider labeled 'Luminosity'.
+2) Luminosity: This feature allows the user to change the luminosity (brightness) of painted objects. The user is given a slider labeled 'Luminosity'. Users change this setting by left clicking and scrolling the slider labeled 'Luminosity'. The farther the slider is to the left, the dimmer objects will be. The farther the slider is to the right, the more luminous objects will be.
 
-3) Delete Objects: This feature allows users to delete objects they painted. User can do so by right clicking on any painted object. The program plays a sound to indicate that you done so.
+3) Delete Objects: This feature allows users to delete objects they painted. The user can do so by right clicking on any painted object. The program plays a sound to indicate that you done so.
 
-4) Range: This feature allows users to modify how far out objects will be painted. Users change this setting by left clicking and scrolling the slider labeled 'Range' or using the scroll mouse wheel.
+4) Range: This feature allows users to modify how far out objects will be painted. The user is given a slider labeled 'Range'. Users change this setting by left clicking and scrolling the slider labeled 'Range' or using the scroll mouse wheel. The farther the slider is to the left, the closer objects will be painted. The farther the slider is to the right, the farther objects will be painted.
 
-5) Launch Mode: This feature allows users to launch objects from the camera out into the world rather than simply painting them on the screen. This mode can be activated by clicking the button labled 'Lanch Mode'. The program plays a sound to indicate that you done so.
+5) Launch Mode: This feature allows users to launch objects from the camera out into the world rather than simply painting them on the screen. The user is given a button labeled 'Launch Mode'. This mode can be activated by clicking the button labeled 'Launch Mode'. The program plays a sound to indicate that you done so. Physics gets turned on automatically when in launch mode.
