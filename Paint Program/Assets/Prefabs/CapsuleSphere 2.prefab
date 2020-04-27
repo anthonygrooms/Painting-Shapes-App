@@ -115,8 +115,8 @@ GameObject:
   - component: {fileID: 2116743514452801794}
   - component: {fileID: 2116743513081504434}
   - component: {fileID: 2116743513081504435}
-  - component: {fileID: 5014390236466288341}
   - component: {fileID: 1238595436306072794}
+  - component: {fileID: 491242771491111470}
   m_Layer: 0
   m_Name: CapsuleSphereObject
   m_TagString: Untagged
@@ -146,7 +146,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116743513081504446}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2116743513081504435
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -184,20 +184,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &5014390236466288341
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116743513081504446}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1238595436306072794
 Animator:
   serializedVersion: 3
@@ -217,6 +203,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &491242771491111470
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116743513081504446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6813572225730672859
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1762617658409396353}
   m_Layer: 0
-  m_Name: CapsuleSphere
+  m_Name: CapsuleSphere 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

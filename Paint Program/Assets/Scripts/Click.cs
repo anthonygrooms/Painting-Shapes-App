@@ -48,8 +48,9 @@ public class Click : MonoBehaviour
      * (rows corresponds to type of animation)
      * (column corresponds to type of shape)
      */
-    public GameObject[] cubes, capsules, spheres;
-    private GameObject[,] primitiveOptions = new GameObject[3,4];
+    //public GameObject[] cubes, capsules, spheres;
+    //private GameObject[,] primitiveOptions = new GameObject[3,4];
+    public GameObject[] primitiveOptions = new GameObject[3];
     private GameObject primitive;
     private List<GameObject> primitives = new List<GameObject>(); // List of painted primitives
     private Animator anim; // Animator
@@ -57,9 +58,14 @@ public class Click : MonoBehaviour
     // Sounds
     public static AudioSource[] audioSources;
 
+    // Animation Information
+    private static int animationState = 0;
+    private float animationSpeed = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
+        /*
         GameObject[][] shapes = new GameObject[][] { cubes, capsules, spheres };
         // Fill the primitiveOptions with the primitive prefabs
         for (int i = 0; i < shapes.Length; i++)
@@ -69,6 +75,7 @@ public class Click : MonoBehaviour
                 primitiveOptions[i, j] = shapes[i][j];
             }
         }
+        */
 
         //Initialize variables
         objectCount = 0;
@@ -93,7 +100,14 @@ public class Click : MonoBehaviour
         range += scrollInput * 25;
         RangeSlider.value += scrollInput * 25;
         range = RangeSlider.value = Mathf.Clamp(RangeSlider.value, 0, 100);
-        
+
+        // Map 1,2,3 and 4 keys to animations
+        if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeAnimationState(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeAnimationState(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeAnimationState(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeAnimationState(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeAnimationState(4);
+
         //If user is holding down left click, paint the desired primitive to the screen with desired attributes
         if (Input.GetMouseButton(0))
         {
@@ -108,7 +122,9 @@ public class Click : MonoBehaviour
             }
 
             // Instantiate the desired primitive with the desired animation
-            primitive = Instantiate(primitiveOptions[shapeDropDown.value, animationDropDown.value]);
+            primitive = Instantiate(primitiveOptions[shapeDropDown.value]);
+
+            primitive.transform.SetParent(transform);
 
             // Play the correct animation
             anim = primitive.GetComponent<Animator>();
@@ -117,9 +133,6 @@ public class Click : MonoBehaviour
                 if (primitive.transform.childCount > 0)
                     anim = primitive.transform.GetChild(0).GetComponent<Animator>();
             }
-                
-            if (anim != null)
-                anim.SetBool("isSpinning",animationDropDown.value==1);
 
             objectCount++; // Increase the object count
             primitive.AddComponent<PaintedObject>(); // Add PaintedObject component to primitive
@@ -158,6 +171,11 @@ public class Click : MonoBehaviour
                 }
             }
 
+            if (primitive.transform.GetChild(0).GetComponent<Animator>() != null)
+            {
+                primitive.transform.GetChild(0).GetComponent<Animator>().SetInteger("state", animationState);
+            }
+
             //DynamicGI.SetEmissive(renderer,renderer.material.color)
             primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
             
@@ -192,6 +210,27 @@ public class Click : MonoBehaviour
             if (destroy)
                 Destroy(primitive, 3);
         }
+    }
+
+    // Changes the animation state
+    public void ChangeAnimationState(int temp)
+    {
+        animationState = temp;
+        animationDropDown.value = animationState;
+
+        foreach (Transform child in transform)
+        {
+            if (child.GetChild(0).gameObject.GetComponent<Animator>() != null)
+            {
+                child.GetChild(0).gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+            }
+        }
+    }
+
+    // Get Animation State
+    public static int GetAnimationState()
+    {
+        return animationState;
     }
 
     // Negate the value of destroy

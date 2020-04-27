@@ -698,9 +698,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 822394133}
-  - {fileID: 578722734}
-  - {fileID: 2109898897}
   - {fileID: 1151096317}
+  - {fileID: 1167338595}
   m_Father: {fileID: 634545629}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4964,21 +4963,10 @@ MonoBehaviour:
   destroy: 0
   shapeDropDown: {fileID: 578722735}
   animationDropDown: {fileID: 2109898898}
-  cubes:
-  - {fileID: 562246222606155711, guid: 89958fb54d468804a9ff595d18a389c3, type: 3}
-  - {fileID: 6239515968531881972, guid: 94f450d2f21a38d4096625db5ab949cb, type: 3}
-  - {fileID: 5551617449523613642, guid: fe7b888522a76cb4c81509b01d9020e9, type: 3}
-  - {fileID: 2619975737235869102, guid: 48ef7bfac15413349a59d2e18f902a66, type: 3}
-  capsules:
-  - {fileID: 6812144266665761915, guid: a5868ac182eb1894c8120968e7eaad9a, type: 3}
-  - {fileID: 253578256515037761, guid: bf3aa4f43a6abc447aa108a07c3bf04e, type: 3}
+  primitiveOptions:
+  - {fileID: 6813572225730672859, guid: be1cbba17426f3640b5740059a6cceb8, type: 3}
   - {fileID: 6813572225730672859, guid: 66c64315a077e044ba9b5f58782ea32e, type: 3}
-  - {fileID: 4030100525136452855, guid: 0053cbe3ab6c3a547b2448d185d964ef, type: 3}
-  spheres:
-  - {fileID: 562246222606155711, guid: 8cc0865e34d0a9147a0d177b157b80bb, type: 3}
-  - {fileID: 6557122818717657675, guid: 4815dc63c73f87840ab9cf7b62a9d33b, type: 3}
-  - {fileID: 333120805789448726, guid: 09256c7d594258d4784b2530577bc7a6, type: 3}
-  - {fileID: 2619975737235869102, guid: 5a6f774916702954cb61ed107ccd0848, type: 3}
+  - {fileID: 6813572225730672859, guid: 8bd151da8776790418cd5afde903b797, type: 3}
 --- !u!82 &534669907
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5516,21 +5504,21 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578722733}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 2.499971, y: 2.499971, z: 0.9999883}
   m_Children:
   - {fileID: 1659306304}
   - {fileID: 653600995}
   - {fileID: 162050266}
-  m_Father: {fileID: 68243897}
-  m_RootOrder: 1
+  m_Father: {fileID: 1224623660}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 211.47, y: -44.7}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -40, y: -40}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &578722735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10085,7 +10073,7 @@ RectTransform:
   - {fileID: 1078427819}
   - {fileID: 1665731483}
   m_Father: {fileID: 68243897}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -10211,19 +10199,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167338594}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0000119, y: 1.0000119, z: 1.0000119}
   m_Children:
   - {fileID: 569793083}
-  m_Father: {fileID: 1224623660}
-  m_RootOrder: 0
+  m_Father: {fileID: 68243897}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -64, y: -64}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -40}
   m_SizeDelta: {x: 331.77, y: 62.21}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1167338596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10747,7 +10735,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000118, y: 1.0000118, z: 1.0000118}
   m_Children:
-  - {fileID: 1167338595}
+  - {fileID: 578722734}
+  - {fileID: 2109898897}
   m_Father: {fileID: 634545629}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13056,10 +13045,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -14026,7 +14015,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -18115,19 +18104,19 @@ RectTransform:
   m_GameObject: {fileID: 2109898896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5002434, y: 2.5002434, z: 1.0000974}
+  m_LocalScale: {x: 2.5002143, y: 2.5002143, z: 1.0000857}
   m_Children:
   - {fileID: 1594497839}
   - {fileID: 1561535163}
   - {fileID: 1345119860}
-  m_Father: {fileID: 68243897}
-  m_RootOrder: 2
+  m_Father: {fileID: 1224623660}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 211.46997, y: -122.46}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -40, y: -140}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &2109898898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18181,9 +18170,22 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Bounce
       m_Image: {fileID: 0}
+    - m_Text: Diamond
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 534669906}
+        m_MethodName: ChangeAnimationState
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2109898899
