@@ -61,6 +61,10 @@ public class Click : MonoBehaviour
     // Animation Information
     private static int animationState = 0;
     private float animationSpeed = 1f;
+    public float speed;
+    public Toggle randomizeSpeed;
+    public Toggle randomizeType;
+    public static bool randomizeTypeValue;
 
     // Start is called before the first frame update
     void Start()
@@ -84,11 +88,15 @@ public class Click : MonoBehaviour
         hasGravity = false;
         luminosity = 0.0f;
         audioSources = GetComponents<AudioSource>();
+        speed = 1;
+        randomizeTypeValue = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        randomizeTypeValue = randomizeType.isOn;
+
         // Update color and size data realtime based on sliders
         maxRed = colorSliders[0].value;
         maxGreen = colorSliders[1].value;
@@ -102,11 +110,15 @@ public class Click : MonoBehaviour
         range = RangeSlider.value = Mathf.Clamp(RangeSlider.value, 0, 100);
 
         // Map 1,2,3 and 4 keys to animations
-        if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeAnimationState(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeAnimationState(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeAnimationState(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeAnimationState(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeAnimationState(4);
+
+        if (!randomizeType.isOn)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeAnimationState(0);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeAnimationState(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeAnimationState(2);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeAnimationState(3);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeAnimationState(4);
+        }
 
         //If user is holding down left click, paint the desired primitive to the screen with desired attributes
         if (Input.GetMouseButton(0))
@@ -123,21 +135,13 @@ public class Click : MonoBehaviour
 
             // Instantiate the desired primitive with the desired animation
             primitive = Instantiate(primitiveOptions[shapeDropDown.value]);
-
             primitive.transform.SetParent(transform);
-
-            // Play the correct animation
-            anim = primitive.GetComponent<Animator>();
-            if (anim == null)
-            {
-                if (primitive.transform.childCount > 0)
-                    anim = primitive.transform.GetChild(0).GetComponent<Animator>();
-            }
 
             objectCount++; // Increase the object count
             primitive.AddComponent<PaintedObject>(); // Add PaintedObject component to primitive
             primitives.Add(primitive); // Add the primtive to the primitive list
             primitive.name += objectCount; // Rename the object
+            primitive.transform.GetChild(0).GetComponent<PaintedObject>().AppendToName(objectCount.ToString());
             Renderer renderer = primitive.GetComponent<Renderer>();
 
             // If there is a renderer, assign it a random color
@@ -171,13 +175,65 @@ public class Click : MonoBehaviour
                 }
             }
 
-            if (primitive.transform.GetChild(0).GetComponent<Animator>() != null)
+            Animator anim;
+            anim = primitive.transform.GetComponent<Animator>();
+            if (anim != null)
             {
-                primitive.transform.GetChild(0).GetComponent<Animator>().SetInteger("state", animationState);
+                if (randomizeType.isOn)
+                    animationState = Random.Range(0, animationDropDown.options.Count);
+                anim.SetInteger("state", animationState);
+                if (randomizeSpeed.isOn)
+                    anim.speed = Random.Range(0, 2f);
+                else
+                    anim.speed = speed;
             }
+            else
+                foreach (Transform child in primitive.transform)
+                {
+                    anim = child.transform.GetComponent<Animator>();
+                    if (anim != null)
+                    {
+                        if (randomizeType.isOn)
+                            animationState = Random.Range(0, animationDropDown.options.Count);
+                        anim.SetInteger("state", animationState);
+                        if (randomizeSpeed.isOn)
+                            anim.speed = Random.Range(0, 2f);
+                        else
+                            anim.speed = speed;
+                    }
+                }
+
+            /*
+            // Set the state for each animator
+            foreach (Transform child in transform)
+            {
+                Animator childAnimator = child.transform.GetComponent<Animator>();
+                if (childAnimator != null)
+                {
+                    childAnimator.SetInteger("state", animationState);
+                    if (randomizeSpeed.isOn)
+                        childAnimator.speed = Random.Range(0,2);
+                    else
+                        childAnimator.speed = speed;
+                }
+                else
+                foreach (Transform grandChild in child)
+                {
+                    Animator grandChildAnimator = grandChild.transform.GetComponent<Animator>();
+                    if (grandChildAnimator != null)
+                        {
+                            grandChildAnimator.SetInteger("state", animationState);
+                            if (randomizeSpeed.isOn)
+                                grandChildAnimator.speed = Random.Range(0,2);
+                            else
+                                grandChildAnimator.speed = speed;
+                        }
+                }
+            }
+            */
 
             //DynamicGI.SetEmissive(renderer,renderer.material.color)
-            primitive.transform.localScale = new Vector3(Random.Range(0, maxSize), Random.Range(0, maxSize), Random.Range(0, maxSize));// Randomize size
+            primitive.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
             
             // If launch mode is on, force physics to be on... things cannot be launched without physics :)
             if (LaunchMode)
@@ -205,7 +261,6 @@ public class Click : MonoBehaviour
             {
                 primitive.transform.position = clickPosition; //Reposition the object
             }
-
             // Destroy the primitive in three seconds if neccessary
             if (destroy)
                 Destroy(primitive, 3);
@@ -216,13 +271,21 @@ public class Click : MonoBehaviour
     public void ChangeAnimationState(int temp)
     {
         animationState = temp;
-        animationDropDown.value = animationState;
+        if (animationDropDown.options.Count > animationState)
+            animationDropDown.value = animationState;
 
         foreach (Transform child in transform)
         {
-            if (child.GetChild(0).gameObject.GetComponent<Animator>() != null)
+            if (child.GetComponent<Animator>()!=null)
             {
-                child.GetChild(0).gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+                child.GetComponent<Animator>().SetInteger("state", animationState);
+            }
+            foreach (Transform grandChild in child)
+            {
+                if (grandChild.gameObject.GetComponent<Animator>() != null)
+                {
+                    grandChild.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+                }
             }
         }
     }
@@ -270,6 +333,56 @@ public class Click : MonoBehaviour
         launchModeLabel.text = LaunchMode ? "Launch Mode (On)" : "Launch Mode (Off)";
         RangeSlider.gameObject.SetActive(!LaunchMode);
         RangeLabel.SetActive(!LaunchMode);
+    }
+
+    public void ChangeAnimationDropDown(int i)
+    {
+        animationDropDown.ClearOptions();
+        if (i == 0)
+        {
+            animationDropDown.AddOptions(new List<string>() {
+            "No Animation",
+            "Spin",
+            "Bounce With Sphere",
+            "Bounce",
+            "Diamond"});
+        }
+        else if (i == 1)
+        {
+            animationDropDown.AddOptions(new List<string>() {
+            "No Animation",
+            "Spin",
+            "Pulse",
+            "Split"});
+        }
+        else if (i == 2)
+        {
+            animationDropDown.AddOptions(new List<string>() {
+            "No Animation",
+            "In And Out",
+            "Bouncy",
+            "Circle"});
+        }
+    }
+
+    // Change Animation Speed
+    public void ChangeAnimationSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    // Randomize Type
+    public void RandomizeType(bool b)
+    {
+        if (!b)
+            animationState = animationDropDown.value;
+    }
+
+    // Change Shape
+    public void ChangeShape(int i)
+    {
+        if (i != 0 && animationState == 4)
+            animationState = animationDropDown.value = 3;
     }
 
     //Destroy all primitives

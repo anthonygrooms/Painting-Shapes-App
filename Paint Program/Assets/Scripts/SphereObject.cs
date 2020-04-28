@@ -15,6 +15,7 @@ public class SphereObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mR.enabled = (Click.GetAnimationState() == 2 ? true : false);
+        if (!Click.randomizeTypeValue)
+            mR.enabled = Click.GetAnimationState() == 2;
     }
 }

@@ -13,6 +13,7 @@ public class PaintedObject : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray,out RaycastHit hit))
             {
+                print(hit.transform.name + " --- " + gameObject.name);
                 if (hit.transform.name == gameObject.name)
                 {
                     Destroy(gameObject);
@@ -24,5 +25,10 @@ public class PaintedObject : MonoBehaviour
         // If this object goes nears the camera, destroy it
         if (transform.position.z < -7.5f && !Click.LaunchMode)
             Destroy(gameObject);
+    }
+
+    public void AppendToName(string s)
+    {
+        gameObject.name += s;
     }
 }
